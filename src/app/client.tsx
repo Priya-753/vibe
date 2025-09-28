@@ -6,10 +6,10 @@ import { useEffect } from "react";
 
 export const Client = () => {
   const trpc = useTRPC();
-  const { data } = useSuspenseQuery(trpc.hello.queryOptions({ text: "Priya" }));
+  const { data } = useSuspenseQuery(trpc.projects.getMany.queryOptions());
 
   useEffect(() => {
     console.log(data);
   }, [data]);
-  return <div>{data?.greeting}</div>;
+  return <div>Projects: {data?.length || 0}</div>;
 };
