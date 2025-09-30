@@ -17,6 +17,7 @@ import { CodeIcon, CrownIcon, EyeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FileCollection, FileExplorer } from "@/components/ui/file-explorer";
+import { UserControl } from "@/components/ui/user-control";
 
 interface ProjectViewProps {
   projectId: string;
@@ -53,6 +54,7 @@ export const ProjectView = ({ projectId }: ProjectViewProps) => {
                 <Button asChild variant="default" size="sm">
                   <Link href="/"><CrownIcon className="size-4" /> <span className="text-sm">Upgrade</span></Link>
                 </Button>
+                <UserControl showName={false} />
               </div>
             </div>
             <TabsContent value="preview" className="flex-1">

@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PROJECT_TEMPLATES } from "../../constants";
+import { useClerk } from "@clerk/nextjs";
 
 const formSchema = z.object({
     value: z.string().min(1, { message: "Value is required" }).max(10000, { message: "Value must be less than 10000 characters" }),
@@ -24,6 +25,8 @@ export const ProjectForm = () => {
 
     const trpc = useTRPC();
 
+    const {user} = useClerk();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -33,6 +36,10 @@ export const ProjectForm = () => {
 
     const createProject = useMutation(trpc.projects.create.mutationOptions({
         onError: (error) => {
+            if (error?.data?.code === "UNAUTHORIZED") {
+                router.push("/sign-in");
+                return;
+            }
             toast.error(error.message);
         },
         onSuccess: (data) => {
@@ -41,6 +48,10 @@ export const ProjectForm = () => {
             //  invalidate usage status
         },
     }));
+
+    if (!user) {
+        return null;
+    }
 
     const onSubmitForm = (values: z.infer<typeof formSchema>) => {
         createProject.mutateAsync({

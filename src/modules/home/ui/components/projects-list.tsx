@@ -1,17 +1,28 @@
 "use client";
 import Link from "next/link";
 import { useTRPC } from "@/trpc/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
+import { useClerk } from "@clerk/nextjs";
 
 export const ProjectsList = () => {
     const trpc = useTRPC();
-    const { data: projects } = useSuspenseQuery(trpc.projects.getMany.queryOptions());
+    const {user} = useClerk();
+
+    const { data: projects = [] } = useQuery({
+        ...trpc.projects.getMany.queryOptions(),
+        enabled: !!user,
+    });
+
+    if (!user) {
+        return null;
+    }
 
     return (
         <div className="w-full bg-white dark:bg-sidebar rounded-xl p-8 border flex flex-col gap-y-6 sm:gap-y-4">
+            <h2 className="text-2xl font-semibold">{user.firstName}'s Projects</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {projects.length > 0 ? projects.map((project) => (
                     <Button variant="outline" asChild key={project.id} className="font-normal h-auto justify-start w-full text-start p-4">
