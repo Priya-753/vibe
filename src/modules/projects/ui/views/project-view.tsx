@@ -40,7 +40,7 @@ export const ProjectView = ({ projectId }: ProjectViewProps) => {
             <MessagesContainer projectId={projectId} activeFragment={activeFragment} setActiveFragment={setActiveFragment} />
           </Suspense>
         </ResizablePanel>
-        <ResizableHandle withHandle />
+        <ResizableHandle className="hover:bg-primary/10 transition-colors"  />
         <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col">
           <Tabs className="h-full flex flex-col"
             defaultValue="preview" value={tabState} onValueChange={(value) => setTabState(value as "preview" | "code")}>

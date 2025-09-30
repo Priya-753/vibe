@@ -14,6 +14,7 @@ interface MessagesContainerProps {
 
 export const MessagesContainer = ({ projectId, activeFragment, setActiveFragment }: MessagesContainerProps) => {
     const bottomRef = useRef<HTMLDivElement>(null);
+    const lastAssistantMessageWithFragmentRef = useRef<Fragment | null>(null);
 
     const trpc = useTRPC(); 
 
@@ -22,11 +23,14 @@ export const MessagesContainer = ({ projectId, activeFragment, setActiveFragment
     }));
 
     useEffect(() => {
-        const lastAssistantMessageWithFragment = messages?.findLast((message) => message.role === MessageRole.ASSISTANT && !!message.fragment);
-        if (lastAssistantMessageWithFragment) {
+        const lastAssistantMessageWithFragment = messages?.findLast(
+            (message) => message.role === MessageRole.ASSISTANT);
+        if (lastAssistantMessageWithFragment?.fragment && 
+            lastAssistantMessageWithFragment.fragment.id !== lastAssistantMessageWithFragmentRef.current?.id) {
             setActiveFragment(lastAssistantMessageWithFragment.fragment);
+            lastAssistantMessageWithFragmentRef.current = lastAssistantMessageWithFragment.fragment;
         }
-    }, [messages, setActiveFragment]);
+    }, [messages, setActiveFragment, activeFragment]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
