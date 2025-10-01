@@ -19,6 +19,7 @@ import Link from "next/link";
 import { FileCollection, FileExplorer } from "@/components/ui/file-explorer";
 import { UserControl } from "@/components/ui/user-control";
 import { useAuth } from "@clerk/nextjs";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface ProjectViewProps {
   projectId: string;
@@ -38,14 +39,18 @@ export const ProjectView = ({ projectId }: ProjectViewProps) => {
     <div className="h-screen">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={35} minSize={20} className="flex flex-col min-h-0">
-          <Suspense fallback={<div>Loading...</div>}>
-            <ProjectHeader projectId={projectId} />
-          </Suspense>
-          <Suspense fallback={<div>Loading...</div>}>
-            <MessagesContainer projectId={projectId} activeFragment={activeFragment} setActiveFragment={setActiveFragment} />
-          </Suspense>
+          <ErrorBoundary fallbackRender={() => <div>Error</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <ProjectHeader projectId={projectId} />
+            </Suspense>
+          </ErrorBoundary>
+          <ErrorBoundary fallbackRender={() => <div>Error</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <MessagesContainer projectId={projectId} activeFragment={activeFragment} setActiveFragment={setActiveFragment} />
+            </Suspense>
+          </ErrorBoundary>
         </ResizablePanel>
-        <ResizableHandle className="hover:bg-primary/10 transition-colors"  />
+        <ResizableHandle className="hover:bg-primary/10 transition-colors" />
         <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col">
           <Tabs className="h-full flex flex-col"
             defaultValue="preview" value={tabState} onValueChange={(value) => setTabState(value as "preview" | "code")}>
