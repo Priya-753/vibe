@@ -7,6 +7,7 @@ export const usageRouter = createTRPCRouter({
         const usage = await getUsageStatus();
         return usage;
         } catch (error) {
+            console.log(error);
             return null;
         }
     }),

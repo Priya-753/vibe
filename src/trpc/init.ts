@@ -4,6 +4,7 @@ import superjson from 'superjson';
 import { auth } from '@clerk/nextjs/server';
 
 export const createTRPCContext = cache(async (opts: { req?: Request }) => {
+  console.log(opts)
   const authResult = await auth();
   return { auth: authResult };
 });

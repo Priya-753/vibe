@@ -1,7 +1,5 @@
 "use client";
 
-import { useTRPC } from "@/trpc/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -31,9 +29,6 @@ export const ProjectView = ({ projectId }: ProjectViewProps) => {
 
   const [activeFragment, setActiveFragment] = useState<Fragment | null>(null);
   const [tabState, setTabState] = useState<"preview" | "code">("preview");
-
-  const trpc = useTRPC();
-  const { data: project } = useSuspenseQuery(trpc.projects.getOne.queryOptions({ id: projectId }));
 
   return (
     <div className="h-screen">

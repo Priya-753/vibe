@@ -1,14 +1,13 @@
-import { Form, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormField } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import TextAreaAutosize from "react-textarea-autosize";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTRPC } from "@/trpc/client";
-import { MessageType } from "@/generated/prisma";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,7 +22,7 @@ interface MessageFormProps {
     onSubmit: (value: string) => void;
 }
 
-export const MessageForm = ({ projectId, onSubmit }: MessageFormProps) => {
+export const MessageForm = ({ projectId }: MessageFormProps) => {
     const [isFocused, setIsFocused] = useState(false);
     const queryClient = useQueryClient();
     const router = useRouter();
@@ -45,7 +44,7 @@ export const MessageForm = ({ projectId, onSubmit }: MessageFormProps) => {
                 router.push("/pricing");
             }
         },
-        onSuccess: (data) => {
+        onSuccess: () => {
             form.reset();
             queryClient.invalidateQueries(trpc.messages.getMany.queryOptions({ projectId }));
             queryClient.invalidateQueries(trpc.usage.status.queryOptions());

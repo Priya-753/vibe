@@ -123,7 +123,7 @@ export const codeAgentFunction = inngest.createFunction(
                     parameters: z.object({
                         files: z.array(z.string()),
                     }),
-                    handler: async ({ files }, { step, network }: Tool.Options<AgentState>) => {
+                    handler: async ({ files }, { step }: Tool.Options<AgentState>) => {
                         return await step?.run("readFiles", async () => {
                             try {
                                 const sandbox = await getSandbox(sandboxId);

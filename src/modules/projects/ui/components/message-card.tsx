@@ -1,6 +1,5 @@
 import { Fragment, MessageRole, MessageType } from "@/generated/prisma";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 import { format } from "date-fns";

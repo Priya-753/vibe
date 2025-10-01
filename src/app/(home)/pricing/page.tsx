@@ -16,7 +16,7 @@ export default function PricingPage() {
               />
             </div>
             <h1>Pricing</h1>
-            <p>Choose the plan that's right for you</p>
+            <p>Choose the plan that is right for you</p>
             <PricingTable 
             appearance={{
                 elements: {

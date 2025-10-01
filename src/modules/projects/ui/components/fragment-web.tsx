@@ -12,6 +12,7 @@ export const FragmentWeb = ({ data }: FragmentWebProps) => {
     const [copied, setCopied] = useState(false);
     const [framentKey, setFragmentKey] = useState(0);
     const handleRefresh = () => {
+        console.log(framentKey)
         setFragmentKey(prev => prev + 1);
     }
 

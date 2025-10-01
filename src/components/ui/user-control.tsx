@@ -1,8 +1,6 @@
-import { useCurrentTheme } from "@/hooks/use-current-theme";
 import { UserButton } from "@clerk/nextjs";
 
 export const UserControl = ({ showName }: { showName: boolean }) => {
-    const currentTheme = useCurrentTheme();
     
     return (
       <UserButton

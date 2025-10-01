@@ -18,17 +18,14 @@ import {
     DropdownMenuSub,
     DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { 
-    ChevronDownIcon, 
-    ChevronLeftIcon, 
-    SunIcon, 
-    MoonIcon, 
-    MonitorIcon, 
-    SettingsIcon, 
-    TrashIcon, 
-    CopyIcon,
-    ShareIcon,
-    MoreHorizontalIcon
+import {
+    ChevronDownIcon,
+    ChevronLeftIcon,
+    SunIcon,
+    MoonIcon,
+    MonitorIcon,
+    SettingsIcon,
+    TrashIcon, MoreHorizontalIcon
 } from "lucide-react";
 
 
@@ -38,7 +35,6 @@ interface ProjectHeaderProps {
 
 export const ProjectHeader = ({ projectId }: ProjectHeaderProps) => {
     const { theme, setTheme } = useTheme();
-    const trpc = useTRPC();
 
     const { data: project } = useSuspenseQuery(useTRPC().projects.getOne.queryOptions({ id: projectId }));
 

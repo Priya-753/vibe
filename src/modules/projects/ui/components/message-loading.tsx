@@ -34,11 +34,6 @@ const ShimmerMessage = () => {
 };
 
 export const MessageLoading = () => {
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        setIsLoading(false);
-    }, []);
 
     return (
         <div className="flex items-center group px-2 pb-4">
