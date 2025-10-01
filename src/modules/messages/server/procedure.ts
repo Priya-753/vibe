@@ -4,6 +4,8 @@ import { z } from "zod";
 import prisma from "@/lib/database";
 import { inngest } from "@/inngest/client";
 import { TRPCError } from "@trpc/server";
+import { consumeCredits } from "@/lib/usage";
+import { RateLimiterRes } from "rate-limiter-flexible";
 
 export const messagesRouter = createTRPCRouter({
     getMany: protectedProcedure
@@ -42,6 +44,15 @@ export const messagesRouter = createTRPCRouter({
         if (!project) {
             throw new TRPCError({ code: "NOT_FOUND", message: "Project not found" });
         }
+        try {
+            await consumeCredits();
+        } catch (error) {
+            if (error instanceof RateLimiterRes) {
+                throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "You have reached the maximum number of requests. Please upgrade to a paid plan." });
+            }
+            throw new TRPCError({ code: "BAD_REQUEST", message: "Something went wrong" });
+        }
+
         const newMessage = await prisma.message.create({
             data: {
                 projectId: project.id,

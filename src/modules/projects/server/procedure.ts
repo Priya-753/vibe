@@ -5,6 +5,8 @@ import { z } from "zod";
 import prisma from "@/lib/database";
 import { inngest } from "@/inngest/client";
 import { TRPCError } from "@trpc/server";
+import { RateLimiterRes } from "rate-limiter-flexible";
+import { consumeCredits } from "@/lib/usage";
 
 export const projectsRouter = createTRPCRouter({
     getOne: protectedProcedure
@@ -43,6 +45,15 @@ export const projectsRouter = createTRPCRouter({
                 .max(10000, { message: "Value must be less than 10000 characters" }),
         }))
         .mutation(async ({ input, ctx }) => {
+            try {
+                await consumeCredits();
+            } catch (error) {
+                if (error instanceof RateLimiterRes) {
+                    throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "You have reached the maximum number of requests. Please upgrade to a paid plan." });
+                }
+                throw new TRPCError({ code: "BAD_REQUEST", message: "Something went wrong" });
+            }
+            
             const createdProject = await prisma.project.create({
                 data: {
                     name: generateSlug(2, {

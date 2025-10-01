@@ -41,11 +41,14 @@ export const ProjectForm = () => {
                 return;
             }
             toast.error(error.message);
+            if (error?.data?.code === "TOO_MANY_REQUESTS") {
+                router.push("/pricing");
+            }
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries(trpc.projects.getMany.queryOptions());
             router.push(`/projects/${data.id}`);
-            //  invalidate usage status
+            queryClient.invalidateQueries(trpc.usage.status.queryOptions());
         },
     }));
 
