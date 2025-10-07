@@ -18,6 +18,7 @@ import { FileCollection, FileExplorer } from "@/components/ui/file-explorer";
 import { UserControl } from "@/components/ui/user-control";
 import { useAuth } from "@clerk/nextjs";
 import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "@/components/ui/error-fallback";
 
 interface ProjectViewProps {
   projectId: string;
@@ -34,12 +35,12 @@ export const ProjectView = ({ projectId }: ProjectViewProps) => {
     <div className="h-screen">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={35} minSize={20} className="flex flex-col min-h-0">
-          <ErrorBoundary fallbackRender={() => <div>Error</div>}>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={<div>Loading...</div>}>
               <ProjectHeader projectId={projectId} />
             </Suspense>
           </ErrorBoundary>
-          <ErrorBoundary fallbackRender={() => <div>Error</div>}>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={<div>Loading...</div>}>
               <MessagesContainer projectId={projectId} activeFragment={activeFragment} setActiveFragment={setActiveFragment} />
             </Suspense>

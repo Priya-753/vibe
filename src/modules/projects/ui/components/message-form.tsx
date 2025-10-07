@@ -89,7 +89,7 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
                             className="pt-4 resize-none border-none w-full outline-none bg-transparent"
                             placeholder="What do you want to build?"
                             onKeyDown={(e) => {
-                                if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                                if (e.key === "Enter" && !e.shiftKey) {
                                     e.preventDefault();
                                     form.handleSubmit(onSubmitForm)(e);
                                 }
@@ -100,10 +100,15 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
                 <div className="flex gap-x-2 items-end justify-between pt-2">
                     <div className="text-[10px] text-muted-foreground font-mono flex items-center gap-x-1">
                         <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center justify-center rounded bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-                            <span>⌘</span>
                             <span>Enter</span>
                         </kbd>
-                        &nbsp;to submit
+                        &nbsp;to submit,&nbsp;
+                        <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center justify-center rounded bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                            <span>Shift</span>
+                            <span>+</span>
+                            <span>Enter</span>
+                        </kbd>
+                        &nbsp;for new line
                     </div>
                     <Button variant="outline" size="icon" onClick={() => form.reset()} disabled={isButtonDisabled}>
                         {isPending ? <Loader2Icon className="size-4 animate-spin" /> : <ArrowUpIcon className="size-4" />}
