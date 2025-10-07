@@ -23,7 +23,7 @@ export const CodeView = ({ code, language }: CodeViewProps) => {
 
     return (
         <div className="w-full h-full overflow-auto">
-            <pre className="p-4 bg-transparent border-none rounded-none m-0 text-sm leading-relaxed">
+            <pre className="p-4 bg-transparent border-none rounded-none m-0 text-sm leading-relaxed whitespace-pre-wrap">
                 <code className={`language-${language}`}>{code}</code>
             </pre>
         </div>

@@ -104,38 +104,39 @@ export const FileExplorer = ({ files }: { files: FileCollection }) => {
     }, [selectedFile, files]);
 
     return (
-        <ResizablePanelGroup direction="horizontal">
-            <ResizablePanel defaultSize={30} minSize={30} className="bg-sidebar">
-                <TreeView data={treeData} value={selectedFile} onValueChange={handleFileSelect} />
-            </ResizablePanel>
-            <ResizableHandle className="hover:bg-primary/10 transition-colors" />
-            <ResizablePanel defaultSize={70} minSize={70} className="bg-sidebar">
-                {selectedFile && files[selectedFile] ? (
-                    <div className="w-full h-full flex flex-col">
-                        <div className="border-b py-2 px-4 bg-sidebar flex justify-between items-center gap-x-2">
-                            <FileBreadCrumbs filePath={selectedFile} />
-                            <Hint text={copied ? "Copied!" : "Copy to clipboard"} side="bottom">
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="ml-auto"
-                                    onClick={handleCopyToClipboard}
-                                    disabled={!files[selectedFile]}>
-                                    {copied ? <CopyCheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
-                                </Button>
-                            </Hint>
-
+        <div className="h-full w-full">
+            <ResizablePanelGroup direction="horizontal" className="h-full">
+                <ResizablePanel defaultSize={30} minSize={20} maxSize={50} className="bg-sidebar">
+                    <TreeView data={treeData} value={selectedFile} onValueChange={handleFileSelect} />
+                </ResizablePanel>
+                <ResizableHandle className="hover:bg-primary/10 transition-colors" />
+                <ResizablePanel defaultSize={70} minSize={50} className="bg-sidebar">
+                    {selectedFile && files[selectedFile] ? (
+                        <div className="w-full h-full flex flex-col">
+                            <div className="border-b py-2 px-4 bg-sidebar flex justify-between items-center gap-x-2 flex-shrink-0">
+                                <FileBreadCrumbs filePath={selectedFile} />
+                                <Hint text={copied ? "Copied!" : "Copy to clipboard"} side="bottom">
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        className="ml-auto"
+                                        onClick={handleCopyToClipboard}
+                                        disabled={!files[selectedFile]}>
+                                        {copied ? <CopyCheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
+                                    </Button>
+                                </Hint>
+                            </div>
+                            <div className="flex-1 min-h-0">
+                                <CodeView code={files[selectedFile]} language={getLanguageFromExtension(selectedFile)} />
+                            </div>
                         </div>
-                        <div className="flex-1 overflow-y-auto">
-                            <CodeView code={files[selectedFile]} language={getLanguageFromExtension(selectedFile)} />
+                    ) : (
+                        <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                            <span>Select a file to view its content</span>
                         </div>
-                    </div>
-                ) : (
-                    <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                        <span>Select a file to view its content</span>
-                    </div>
-                )}
-            </ResizablePanel>
-        </ResizablePanelGroup>
+                    )}
+                </ResizablePanel>
+            </ResizablePanelGroup>
+        </div>
     );
 };
